@@ -10,6 +10,9 @@
 #define SIZE 10
 
 using namespace std;
+//////////////////////////////////////////////////////////////----User's Data----//////////////////////////////////////////////////////////
+fstream player1_data;
+fstream player2_data;
 
 int player_1 = 1; // thông tin player 1
 int player_2 = 2; // như cái trên
@@ -253,21 +256,20 @@ void ticking(int turn)
 	}
 }
 
-
-
 //////////////////////////////////////////////////////////////----Chơi với người----//////////////////////////////////////////////////////////
+
 
 void inline player1_turn()
 {
 	system("CLS");
-	fstream player1_data;
-	player1_data.open("player1_data.txt", ios::out);
-	string player1_name;
-	cout << "Enter your name to begin: ";
-	cin.ignore(); getline(cin, player1_name);
-	player1_data << "Player1's Name: " << player1_name;
+	
+	// player1_data.open("player1_data.txt", ios::out);
+	// string player1_name;
+	// cout << "Enter your name to begin: ";
+	// cin.ignore(); getline(cin, player1_name);
+	// player1_data << "Player1's Name: " << player1_name;
 	printboard();
-	cout << "Player 1 [X] Your Turn\n";
+	cout << "Player 1 [X] Your Turn \n";
 	ticking(player_1);
 }
 void inline player2_turn()
@@ -279,9 +281,20 @@ void inline player2_turn()
 }
 void inline gameplay_p2p()
 {
+	string player1_name, player2_name;
+	cout << "Enter name of player 1: " << endl;
+	cin.ignore();
+	getline(cin, player1_name);
+	cout << "Enter name of player 2: " << endl;
+	getline(cin, player2_name);
+	cin.ignore();
+
 	for (int i = 0; i < 50; i++)
 	{
 		player1_turn();
+		player1_data.open("player1_data.txt", ios::out);
+		player1_data << "Player1's Name: " << player1_name;
+		player1_data << endl;
 		if (i > 3)
 		{
 			if (check(boardscore, SIZE) == player_1)
@@ -289,6 +302,7 @@ void inline gameplay_p2p()
 				system("CLS");
 				printboard();
 				cout << "\n\t\t\t\tCongrats! Player 1 Won the Game!\n";
+				player1_data << "Player 1 Won the Game!" << endl;
 				cout << "\n\t\t\t\t";
 				system("pause");
 				menu();
@@ -302,6 +316,9 @@ void inline gameplay_p2p()
 			menu();
 		}
 		player2_turn();
+		player2_data.open("player2_data.txt", ios::out);
+		player2_data << "Player2's Name: " << player2_name;
+		player2_data << endl;
 		if (i > 3)
 		{
 			if (check(boardscore, SIZE) == player_2)
@@ -309,11 +326,14 @@ void inline gameplay_p2p()
 				system("CLS");
 				printboard();
 				cout << "\n\t\t\t\tCongrats! Player 2 Won the Game!\n";
+				player2_data << "Player 2 Won the Game!" << endl;
 				cout << "\n\t\t\t\t";
 				system("pause");
 				menu();
 			}
 		}
+		player1_data.close();
+		player2_data.close();
 	}
 }
 
@@ -378,7 +398,7 @@ void inline gameplay_p2c_newbie()
 			{
 				system("CLS");
 				printboard();
-				cout << "\n\t\t\t\tOpps! You loose!\n";
+				cout << "\n\t\t\t\tOpps! You lose!\n";
 				cout << "\n\t\t\t\t";
 				system("pause");
 				menu();
@@ -465,7 +485,7 @@ void inline gameplay_p2c_normal()
 			{
 				system("CLS");
 				printboard();
-				cout << "\n\t\t\t\tOpps! You loose!\n";
+				cout << "\n\t\t\t\tOpps! You lose!\n";
 				cout << "\n\t\t\t\t";
 				system("pause");
 				menu();
